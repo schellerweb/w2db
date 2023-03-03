@@ -166,7 +166,7 @@ If there is an error, the response is.
 </details>
 </br>
 
-[some screen shots](./doc/screens.md)
+[some screen shots](./doc/images.md)
 <hr/>
 
 ## Requirements
