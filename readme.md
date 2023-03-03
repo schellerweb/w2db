@@ -27,7 +27,7 @@ The w2grid module has some important functions such as sorting, searching or edi
 <tr><td>10</td><td>state</td><td>nvarchar(32)</td><td>State address</td></tr>
 <tr><td>11</td><td>zip</td><td>nvarchar(8)</td><td>ZIP Code</td></tr>
 <tr><td>12</td><td>country</td><td>char(2)</td><td>Alpha-2 Country Code</td></tr>
-<tr><td>12</td><td>phone</td><td>nvarchar(20)</td><td>Phone number</td></tr>
+<tr><td>13</td><td>phone</td><td>nvarchar(20)</td><td>Phone number</td></tr>
 
 </table>
 </h5>
@@ -166,7 +166,7 @@ If there is an error, the response is.
 </details>
 </br>
 
-[some screen shots](./doc/screens.md)
+[some screen shots](./doc/images.md)
 <hr/>
 
 ## Requirements
