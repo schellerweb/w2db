@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>w2db Example</title>
+    <link type="text/css" rel="stylesheet" href="/web/css/w2ui-1.5.min.css">
+    <script type="text/javascript" src="/web/js/jquery-3.6.3.min.js"></script>
+    <script type="text/javascript" src="/web/js/w2ui-1.5.min.js"></script>
+    <link rel="icon" href="/web/favicon.ico" type="image/vnd.microsoft.icon" />
+    <style>
+        .grid {
+            width: 920px;
+            height: 520px;
+            position:fixed; 
+            top: calc(50% - 260px);
+            left: calc(50% - 460px);
+        }
+        .w2ui-popup .w2ui-popup-title {
+            background-image: -webkit-linear-gradient(#dae6f3,#c2d5ed);
+            background-image: -moz-linear-gradient(#dae6f3,#c2d5ed);
+            background-image: -ms-linear-gradient(#dae6f3,#c2d5ed);
+            background-image: -o-linear-gradient(#dae6f3,#c2d5ed);
+            background-image: linear-gradient(#dae6f3,#c2d5ed);
+            filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffececec',endColorstr='#ffdfdfdf',GradientType=0);
+            border-bottom: 1px solid #99bbe8 !important;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var config = {
+                grid: {
+                    name: 'grid',
+                    header: 'Customer',         
+                    advanceOnEdit: true,
+                    multiSearch: true, 
+                    autoLoad: true,
+                    url: 'http://localhost:3000/w2grid',
+                    show: {
+                        header: true,
+                        footer: true,
+                        toolbar: true,
+                        toolbarAdd: true,
+                        toolbarEdit: true,
+                        toolbarDelete: true,
+                        toolbarSave: true
+                    },
+                    columns: [
+                        { field: 'recid', text: 'ID', sortable: true, size: '50px', attr: 'align=right'},
+                        { field: 'usr', text: 'Username', size: '200px', sortable: true, editable: { type: 'text' } },
+                        { field: 'pwd', text: 'Password', size: '80px', sortable: true, editable: { type: 'text' }, render: 'password',hidden: true },
+                        { field: 'title', text: 'Title', size: '38px', sortable: true, editable: { type: 'text' } },
+                        { field: 'fname', text: 'First Name', size: '70px', sortable: true, editable: { type: 'text' } },
+                        { field: 'lname', text: 'Last Name', size: '70px', sortable: true, editable: { type: 'text' }  },
+                        { field: 'company', text: 'Company', size: '140px', sortable: true, editable: { type: 'text' }  },
+                        { field: 'street', text: 'Street', size: '140px', sortable: true, editable: { type: 'text' }  },
+                        { field: 'city', text: 'City', size: '100px', sortable: true, editable: { type: 'text' }  },
+                        { field: 'state', text: 'State', size: '40px', sortable: true, editable: { type: 'text' }  },
+                        { field: 'zip', text: 'ZIP', size: '50px', sortable: true, editable: { type: 'text' }  },
+                        { field: 'country', text: 'Country',size: '40px', sortable: true, editable: { type: 'text' }  },
+                        { field: 'phone', text: 'Phone', size: '120px', sortable: true, editable: { type: 'text' }  }
+                    ],
+                    onAdd: function(event) {
+                        event.done(() => {
+                            let op = {
+                                header: 'Add Customer',
+                                recid: 10000000,    
+                            };
+                            openForm(op);
+                        });
+                    },
+                    onEdit(event) {
+                        event.done(() => {
+                            var sel = this.getSelection()
+                            if (sel.length == 1) {
+                                let op = {
+                                    header: 'Edit Customer',
+                                    recid: sel[0],
+                                };
+                                openForm(op);
+                            };
+                        });
+                    }
+                }
+            }
+            $('#grid').w2grid(config.grid);
+        });
+
+        function openForm(op) {
+            if (!op) op = {};
+            if (op.header === undefined) op.header = 'no header';
+            if (op.recid === undefined) op.recid = 0;
+            let config = {
+                popup: {
+                    title: op.header,
+                    body: '<div id="form" style="width: 100%; height: 100%;"></div>',
+                    style: 'padding: 0px 0px 0px 0px',
+                    width: 380,
+                    height: 480,
+                    modal: true
+                },
+                form: {
+                    name: 'form',
+                    url: 'http://localhost:3000/w2form',
+                    fields: [
+                        { field: 'usr', type: 'email', required: true, html: { label: 'Username:', attr: 'size="30" maxlength="64"' } },
+                        { field: 'pwd', type: 'password', required: true, html: { label: 'Password:', attr: 'size="30" maxlength="32"' } },
+                        { field: 'title', type: 'text', html: { label: 'Title:', attr: 'size="12" maxlength="12"' } },
+                        { field: 'fname', type: 'text', html: { label: 'First Name:', attr: 'size="30" maxlength="32"' } },
+                        { field: 'lname', type: 'text', html: { label: 'Last Name:', attr: 'size="30" maxlength="32"' } },
+                        { field: 'company', type: 'text', html: { label: 'Company:', attr: 'size="30" maxlength="48"' } },
+                        { field: 'street', type: 'text', html: { label: 'Street:', attr: 'size="30" maxlength="48"' } },
+                        { field: 'city', type: 'text', html: { label: 'City:', attr: 'size="30" maxlength="48"' } },
+                        { field: 'state', type: 'text', html: { label: 'State:', attr: 'size="30" maxlength="32"' } },
+                        { field: 'zip', type: 'text', html: { label: 'ZIP:', attr: 'size="6" maxlength="8"' } },
+                        { field: 'country', type: 'text', html: { label: 'Country:', attr: 'size="2" maxlength="2"' } },
+                        { field: 'phone', type: 'text', html: { label: 'Phone:', attr: 'size="20" maxlength="20"' } }
+                    ],
+                    actions: {
+                        Save() { 
+                            this.save(function (data) {
+                                if (data.status == 'success') {
+                                    w2ui['grid'].reload();
+                                    w2popup.close()
+                                }
+                            });
+                        },
+                        Cancel() { 
+                            w2popup.close();
+                        }
+                    }
+                }
+            }
+            if (!w2ui['form']) {
+                $().w2form(config.form);
+            }
+            w2popup.open(config.popup);
+            w2ui['form'].recid=op.recid;
+            w2ui['form'].reload();
+            w2ui['form'].render($('#form'));
+            w2ui['form'].refresh();
+            $("#form").keypress(function(event) {
+                if (event.keyCode==13) {
+                    w2ui['form'].save(function (data) {
+                        console.log(data);
+                        if (data.status == 'success') {
+                            w2ui['grid'].reload();
+                            w2popup.close()
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div id="grid" class="grid"></div>
+</body>
+</html>
